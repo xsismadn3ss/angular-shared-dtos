@@ -2,7 +2,11 @@
  * Public API Surface of shared-dtos
  */
 // common
-export * from'./lib/common/message.dto'
+export * from './lib/common/message.dto'
+export * from './lib/common/base.dto'
+
+// utils
+export * from './lib/validation'
 
 // users/auth
 export * from './lib/users/auth/user.dto'
