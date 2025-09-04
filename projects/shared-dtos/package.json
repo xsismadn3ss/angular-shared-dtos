@@ -1,8 +1,8 @@
 {
   "name": "shared-dtos",
   "version": "0.0.1",
-  "description": "DTOs, helpers de validación y servicio de autenticación compartidos para apps Angular.",
-  "keywords": ["angular", "dto", "class-validator", "shared", "auth"],
+  "description": "DTOs, helpers de validación y servicios compartidos para apps Angular.",
+  "keywords": ["angular", "dto", "class-validator", "shared", "auth", "colibrihub"],
   "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
