@@ -1,9 +1,14 @@
 {
   "name": "shared-dtos",
   "version": "0.0.1",
+  "description": "DTOs, helpers de validación y servicio de autenticación compartidos para apps Angular.",
+  "keywords": ["angular", "dto", "class-validator", "shared", "auth"],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
-    "@angular/core": "^19.2.0"
+    "@angular/core": "^19.2.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
