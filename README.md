@@ -1,59 +1,60 @@
-# AngularSharedDtos
+# shared-dtos
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.13.
+Librería de DTOs y utilidades compartidas para proyectos Angular. Incluye:
 
-## Development server
+- DTOs comunes (MessageDto, BaseDto) y de autenticación (UserDto, LoginDto, LoginResponseDto).
+- Utilidades de validación basadas en class-validator/class-transformer (validateDto, validateAndBuildDto).
+- AuthService y token de inyección `AUTH_API_URL` para integración con API de autenticación.
 
-To start a local development server, run:
+## Instalación
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Asegúrate de tener `@angular/core`, `@angular/common`, `class-validator` y `class-transformer` en tu proyecto (se declaran como peerDependencies).
 
 ```bash
-ng generate component component-name
+npm install @xsismadn3ss/shared-dtos class-validator class-transformer
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+> Paquete publicado bajo el scope `@xsismadn3ss`.
 
-```bash
-ng generate --help
+## Uso rápido
+
+```ts
+// public-api exporta todo lo necesario
+import { BaseDto, MessageDto, LoginDto, LoginResponseDto, UserDto, validateDto, validateAndBuildDto, AuthService, AUTH_API_URL } from '@xsismadn3ss/shared-dtos';
 ```
 
-## Building
+### Validación
 
-To build the project run:
+```ts
+import { BaseDto } from '@xsismadn3ss/shared-dtos';
+import { IsString, IsNotEmpty } from 'class-validator';
 
-```bash
-ng build
+class ExampleDto extends BaseDto {
+  @IsString()
+  @IsNotEmpty()
+  name!: string;
+}
+
+const instance = await ExampleDto.create({ name: 'test' }); // lanza DtoValidationError si hay errores
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### AuthService
 
-## Running unit tests
+Agrega el token `AUTH_API_URL` con la URL base de tu API:
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+```ts
+import { AUTH_API_URL } from '@xsismadn3ss/shared-dtos';
 
-```bash
-ng test
+providers: [
+  { provide: AUTH_API_URL, useValue: 'https://api.example.com' }
+]
 ```
 
-## Running end-to-end tests
+Luego usa el servicio:
 
-For end-to-end (e2e) testing, run:
+```ts
+constructor(private auth: AuthService) {}
 
-```bash
-ng e2e
+this.auth.login({ username: 'u', password: 'p', domain: 'colibrihub.com' })
+  .subscribe(r => console.log(r.token));
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

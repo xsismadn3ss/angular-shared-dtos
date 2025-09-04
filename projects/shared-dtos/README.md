@@ -11,22 +11,22 @@ Librería de DTOs y utilidades compartidas para proyectos Angular. Incluye:
 Asegúrate de tener `@angular/core`, `@angular/common`, `class-validator` y `class-transformer` en tu proyecto (se declaran como peerDependencies).
 
 ```bash
-npm install shared-dtos class-validator class-transformer
+npm install @xsismadn3ss/shared-dtos class-validator class-transformer
 ```
 
-> Nota: Si publicas bajo un scope, reemplaza `shared-dtos` por `@tu-scope/shared-dtos`.
+> Paquete publicado bajo el scope `@xsismadn3ss`.
 
 ## Uso rápido
 
 ```ts
 // public-api exporta todo lo necesario
-import { BaseDto, MessageDto, LoginDto, LoginResponseDto, UserDto, validateDto, validateAndBuildDto, AuthService, AUTH_API_URL } from 'shared-dtos';
+import { BaseDto, MessageDto, LoginDto, LoginResponseDto, UserDto, validateDto, validateAndBuildDto, AuthService, AUTH_API_URL } from '@xsismadn3ss/shared-dtos';
 ```
 
 ### Validación
 
 ```ts
-import { BaseDto } from 'shared-dtos';
+import { BaseDto } from '@xsismadn3ss/shared-dtos';
 import { IsString, IsNotEmpty } from 'class-validator';
 
 class ExampleDto extends BaseDto {
@@ -43,7 +43,7 @@ const instance = await ExampleDto.create({ name: 'test' }); // lanza DtoValidati
 Agrega el token `AUTH_API_URL` con la URL base de tu API:
 
 ```ts
-import { AUTH_API_URL } from 'shared-dtos';
+import { AUTH_API_URL } from '@xsismadn3ss/shared-dtos';
 
 providers: [
   { provide: AUTH_API_URL, useValue: 'https://api.example.com' }
