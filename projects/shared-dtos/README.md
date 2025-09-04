@@ -1,63 +1,81 @@
-# SharedDtos
+# shared-dtos
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+Librería de DTOs y utilidades compartidas para proyectos Angular. Incluye:
 
-## Code scaffolding
+- DTOs comunes (MessageDto, BaseDto) y de autenticación (UserDto, LoginDto, LoginResponseDto).
+- Utilidades de validación basadas en class-validator/class-transformer (validateDto, validateAndBuildDto).
+- AuthService y token de inyección `AUTH_API_URL` para integración con API de autenticación.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Instalación
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Asegúrate de tener `@angular/core`, `@angular/common`, `class-validator` y `class-transformer` en tu proyecto (se declaran como peerDependencies).
 
 ```bash
-ng generate --help
+npm install shared-dtos class-validator class-transformer
 ```
 
-## Building
+> Nota: Si publicas bajo un scope, reemplaza `shared-dtos` por `@tu-scope/shared-dtos`.
 
-To build the library, run:
+## Uso rápido
+
+```ts
+// public-api exporta todo lo necesario
+import { BaseDto, MessageDto, LoginDto, LoginResponseDto, UserDto, validateDto, validateAndBuildDto, AuthService, AUTH_API_URL } from 'shared-dtos';
+```
+
+### Validación
+
+```ts
+import { BaseDto } from 'shared-dtos';
+import { IsString, IsNotEmpty } from 'class-validator';
+
+class ExampleDto extends BaseDto {
+  @IsString()
+  @IsNotEmpty()
+  name!: string;
+}
+
+const instance = await ExampleDto.create({ name: 'test' }); // lanza DtoValidationError si hay errores
+```
+
+### AuthService
+
+Agrega el token `AUTH_API_URL` con la URL base de tu API:
+
+```ts
+import { AUTH_API_URL } from 'shared-dtos';
+
+providers: [
+  { provide: AUTH_API_URL, useValue: 'https://api.example.com' }
+]
+```
+
+Luego usa el servicio:
+
+```ts
+constructor(private auth: AuthService) {}
+
+this.auth.login({ username: 'u', password: 'p', domain: 'colibrihub.com' })
+  .subscribe(r => console.log(r.token));
+```
+
+## Construir y publicar
+
+1. Construir la librería:
 
 ```bash
-ng build shared-dtos
+npm run build -- --project shared-dtos
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
-
-### Publishing the Library
-
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/shared-dtos
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+2. Publicar desde `dist/shared-dtos`:
 
 ```bash
-ng test
+cd dist/shared-dtos
+npm publish --access public
 ```
 
-## Running end-to-end tests
+También puedes usar el script `npm run publish:lib` desde la raíz si está disponible.
 
-For end-to-end (e2e) testing, run:
+## Licencia
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT
