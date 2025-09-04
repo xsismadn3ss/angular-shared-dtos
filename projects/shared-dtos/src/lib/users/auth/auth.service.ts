@@ -21,7 +21,7 @@ import {MessageDto} from '../../common/message.dto';
  *    imports: [BrowserModule, HttpClientModule],
  *    providers:[
  *      // la url de la API debe ser manejada como variable de entorno, no debe estar pública
- *      { provide: AUTH_API_URL, userValue: 'https://api.example.com'} // <- API de autenticación
+ *      { provide: AUTH_API_URL, useValue: 'https://api.example.com'} // <- API de autenticación
  *    ],
  *    bootstrap: [AppComponent]
  * })
@@ -37,7 +37,7 @@ export const AUTH_API_URL = new InjectionToken('AUTH_API_URL')
  * ---
  * ## Ejemplo de uso
  * ```typescript
- * import {AuthService} from 'share-dtos'
+ * import {AuthService} from 'shared-dtos'
  *
  * @Component({
  *    selector: 'app-login',
@@ -61,14 +61,14 @@ export class AuthService {
   constructor(@Optional() @Inject(AUTH_API_URL) private readonly baseUrl?: string | null) {}
 
   login(credentials: LoginDto): Observable<LoginResponseDto>{
-    return this.http.post<LoginResponseDto>(this.baseUrl+'/auht/login', credentials);
+    return this.http.post<LoginResponseDto>(this.baseUrl + '/auth/login', credentials);
   }
 
   logout(): Observable<MessageDto>{
     return this.http.post<MessageDto>(
-      this.baseUrl+'/auht/logout',
+      this.baseUrl + '/auth/logout',
       {},
-      {withCredentials: true}
+      { withCredentials: true }
     );
   }
 }
