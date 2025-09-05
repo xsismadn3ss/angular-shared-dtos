@@ -7,6 +7,7 @@ export * from './lib/common/base.dto'
 
 // utils
 export * from './lib/validation'
+export * from './lib/cookie'
 
 // users/auth
 export * from './lib/users/auth/login.dto'
