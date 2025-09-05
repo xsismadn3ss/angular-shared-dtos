@@ -1,4 +1,4 @@
-import {Inject, inject, Injectable, InjectionToken, Optional} from '@angular/core';
+import {Inject, inject, Injectable, InjectionToken, isDevMode, Optional} from '@angular/core';
 import {LoginResponseDto, LoginDto} from './login.dto';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
@@ -61,10 +61,21 @@ export class AuthService {
   constructor(@Optional() @Inject(AUTH_API_URL) private readonly baseUrl?: string | null) {}
 
   login(credentials: LoginDto): Observable<LoginResponseDto>{
-    return this.http.post<LoginResponseDto>(this.baseUrl + '/authentication/login', credentials);
+    const res = this.http.post<LoginResponseDto>(this.baseUrl + '/authentication/login', credentials);
+
+    if(isDevMode()){
+      res.subscribe(data =>{
+        document.cookie = `token=${data.token}; max-age=60*60*24; path=/;`
+      });
+    }
+
+    return res;
   }
 
   logout(): Observable<MessageDto>{
+    if(isDevMode()){
+      document.cookie = `token=; max-age=0; path=/;`
+    }
     return this.http.post<MessageDto>(
       this.baseUrl + '/authentication/logout',
       {},
