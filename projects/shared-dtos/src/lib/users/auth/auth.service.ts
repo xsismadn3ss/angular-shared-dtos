@@ -46,8 +46,24 @@ import {MessageDto} from '../../common/message.dto';
  * //...
  * }
  * ```
- * Asegurate de inyectar el token para la URL del servicio, revisa la
- * documentación del servicio para ver como se asignan valores a los tokens
+ *
+ * Alternativa de como inyectar el servicio a un componente
+ * ```ts
+ * import {AuthService} from '@xsismadn3ss/shared-dtos'
+ * import {inject} from '@angular/core';
+ *
+ * @Component({
+ *    selector: 'app-login',
+ *    template: ´...´
+ * })
+ * export class LoginComponent {
+ *  private readonly auhtService = inject(AuthService)
+ *
+ *  constructor(){}
+ *
+ * //...
+ * }
+ * ```
  */
 @Injectable({
   providedIn: 'root'
