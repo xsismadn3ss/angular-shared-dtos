@@ -21,10 +21,17 @@ export class DtoValidationError extends Error {
   }
 }
 
+/**
+ * ### ``BaseDTO``
+ * DTO base, permite validar el esquema de un objeto usando el
+ * método create
+ */
 export abstract class BaseDto {
-  // Evita instanciación directa sin pasar por create (y por tanto, sin validar)
   protected constructor() {}
 
+  /**
+   * Utiliza este método para validar el esquema de cualquier DTO
+   */
   static async create<T extends BaseDto>(this: new () => T, init: Partial<T>): Promise<T> {
     const { instance, errors } = await validateAndBuildDto(this, init);
     if (errors.length) {
