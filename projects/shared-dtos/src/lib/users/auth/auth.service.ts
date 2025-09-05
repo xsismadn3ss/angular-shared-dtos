@@ -99,6 +99,11 @@ export class AuthService {
   logout(): Observable<MessageDto>{
     if(isDevMode()){
       document.cookie = `token=; max-age=0; path=/;`
+      const msg = {message: "Has cerrado sesión con éxito"} as MessageDto
+      return new Observable<MessageDto>(subscriber => {
+        subscriber.next(msg)
+        subscriber.complete()
+      })
     }
     return this.http.post<MessageDto>(
       this.baseUrl + '/authentication/logout',
