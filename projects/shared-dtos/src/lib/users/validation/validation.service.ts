@@ -2,7 +2,7 @@ import {inject, Injectable, isDevMode} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {UserDto} from './user.dto';
-import {CookieService} from '../../common/cookie.service';
+import {findCookie} from '../../cookie';
 
 /**
  * ## ``Validation Service``
@@ -17,7 +17,6 @@ import {CookieService} from '../../common/cookie.service';
 })
 export class ValidationService{
   private readonly http = inject(HttpClient);
-  private readonly cookie = inject(CookieService);
 
   constructor(private readonly baseUrl?: string | null) {
   }
@@ -29,7 +28,7 @@ export class ValidationService{
    */
   validate(): Observable<UserDto>{
     if(isDevMode()){
-      const access_token_cookie = this.cookie.findCookie('token');
+      const access_token_cookie = findCookie('token');
       if(!access_token_cookie) {
         throw new Error('No token found');
       }
