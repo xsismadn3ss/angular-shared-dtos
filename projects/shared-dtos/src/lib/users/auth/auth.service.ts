@@ -61,12 +61,12 @@ export class AuthService {
   constructor(@Optional() @Inject(AUTH_API_URL) private readonly baseUrl?: string | null) {}
 
   login(credentials: LoginDto): Observable<LoginResponseDto>{
-    return this.http.post<LoginResponseDto>(this.baseUrl + '/auth/login', credentials);
+    return this.http.post<LoginResponseDto>(this.baseUrl + '/authentication/login', credentials);
   }
 
   logout(): Observable<MessageDto>{
     return this.http.post<MessageDto>(
-      this.baseUrl + '/auth/logout',
+      this.baseUrl + '/authentication/logout',
       {},
       { withCredentials: true }
     );
