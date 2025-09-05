@@ -2,10 +2,10 @@
 
 Librería de DTOs y utilidades compartidas para proyectos Angular. Incluye:
 
-- DTOs comunes (MessageDto, BaseDto) y de autenticación (UserDto, LoginDto, LoginResponseDto).
-- Utilidades de validación basadas en class-validator/class-transformer (validateDto, validateAndBuildDto).
-- AuthService y token de inyección `AUTH_API_URL` para integración con API de autenticación.
-
+- DTOs comunes (MessageDto, BaseDto) y de autenticación (UserDto, LoginDto, LoginResponseDto). 🗒️
+- Utilidades de validación basadas en class-validator/class-transformer (validateDto, validateAndBuildDto). ⬆️
+- Servicios públicos para utilizar en proyectos de angular *(se requiere
+  configurar URL al que van a realizar peticiones los servicios)* 🚀
 ## Instalación
 
 Asegúrate de tener `@angular/core`, `@angular/common`, `class-validator` y `class-transformer` en tu proyecto (se declaran como peerDependencies).
@@ -14,68 +14,74 @@ Asegúrate de tener `@angular/core`, `@angular/common`, `class-validator` y `cla
 npm install @xsismadn3ss/shared-dtos class-validator class-transformer
 ```
 
-> Paquete publicado bajo el scope `@xsismadn3ss`.
-
 ## Uso rápido
 
-```ts
-// public-api exporta todo lo necesario
-import { BaseDto, MessageDto, LoginDto, LoginResponseDto, UserDto, validateDto, validateAndBuildDto, AuthService, AUTH_API_URL } from '@xsismadn3ss/shared-dtos';
-```
-
-### Validación
+### Crear un DTO y validar esquema
+Esta librería utiliza ``class-validator`` para validar el esquema de los DTO.
+Usa las utilidades de esta librería para hacer validaciones.
 
 ```ts
-import { BaseDto } from '@xsismadn3ss/shared-dtos';
-import { IsString, IsNotEmpty } from 'class-validator';
+import {LoginDto} from "@xsismaddn3ss/shared-dtos";
 
-class ExampleDto extends BaseDto {
-  @IsString()
-  @IsNotEmpty()
-  name!: string;
+// datos de formulario
+const data = {
+  username: "<USERNAME>",
+  password: "<PASSWORD>"
 }
 
-const instance = await ExampleDto.create({ name: 'test' }); // lanza DtoValidationError si hay errores
+// el método create valida automatiacmente el esquema del DTO
+const loginDto = new LoginDto.create(data)
 ```
 
-### AuthService
+### Configurar servicios
+En esta librería puedes encontrar servicios públicos para utilizarlos en tus
+repositorios. Lo único que se debe hacer es indicar la URL que usara el servicio
+para realizar las peticiones a la URL especificada.
 
-Agrega el token `AUTH_API_URL` con la URL base de tu API:
+En el archivo ``app.config.ts`` del proyecto de Angular agrega la siguiente
+configuración.
+````ts
+import {ApplicationConfig, inject, provideZoneChangeDetection} from '@angular/core';
+import {AuthService} from '@xsismadn3ss/shared-dtos';
 
-```ts
-import { AUTH_API_URL } from '@xsismadn3ss/shared-dtos';
+export const appConfig: ApplicationConfig = {
+  providers: [
+    /*
+    other providers here
+     */
+    //--------------------
+    
+    // configuración del servicio importado
+    {
+      provide: AuthService,
+      useFactory: () => {
+        const http = inject(HttpClient);
+        // URL del servicio
+        const baseUrl = '<AUTH_SERVICE_URL>';
+        
+        // agregar URL al crear la instancia del servicio
+        return new AuthService(baseUrl);
+      }
+    }
+  ]
+};
+````
 
-providers: [
-  { provide: AUTH_API_URL, useValue: 'https://api.example.com' }
-]
-```
+### Utilizar servicios
+Una vez que ya se han configurado las variables necesarias para utilizar un
+servicio ya se pueden importar en componentes e inyectar como dependencias.
 
-Luego usa el servicio:
+````ts
+import {AuthService} from '@xsismadn3ss/shared-dtos'
 
-```ts
-constructor(private auth: AuthService) {}
+@Component({
+   selector: 'app-login',
+   template: "...",
+})
+export class LoginComponent {
 
-this.auth.login({ username: 'u', password: 'p', domain: 'colibrihub.com' })
-  .subscribe(r => console.log(r.token));
-```
+ constructor(private readonly auth: AuthService){}
 
-## Construir y publicar
-
-1. Construir la librería:
-
-```bash
-npm run build -- --project shared-dtos
-```
-
-2. Publicar desde `dist/shared-dtos`:
-
-```bash
-cd dist/shared-dtos
-npm publish --access public
-```
-
-También puedes usar el script `npm run publish:lib` desde la raíz si está disponible.
-
-## Licencia
-
-MIT
+//...
+}
+````
