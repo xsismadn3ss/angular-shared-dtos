@@ -33,10 +33,12 @@ export class ValidationService{
         throw new Error('No token found');
       }
 
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${access_token_cookie}`
+      })
+
       return this.http.get<UserDto>(this.baseUrl + '/validation/header', {
-        headers: {
-          'Authorization': `Bearer ${access_token_cookie}`
-        }
+        headers
       })
     }
 
