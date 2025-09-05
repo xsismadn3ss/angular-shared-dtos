@@ -9,6 +9,10 @@ export * from './lib/common/base.dto'
 export * from './lib/validation'
 
 // users/auth
-export * from './lib/users/auth/user.dto'
 export * from './lib/users/auth/login.dto'
 export * from './lib/users/auth/auth.service'
+
+
+// users/validation
+export * from './lib/users/validation/validation.service'
+export * from './lib/users/validation/user.dto'
