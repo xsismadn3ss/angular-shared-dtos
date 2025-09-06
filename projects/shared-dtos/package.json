@@ -1,6 +1,6 @@
 {
   "name": "@xsismadn3ss/shared-dtos",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "DTOs, helpers de validación y servicios compartidos para apps Angular.",
   "keywords": ["angular", "dto", "class-validator", "shared", "auth", "colibrihub"],
   "license": "MIT",

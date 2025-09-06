@@ -34,7 +34,7 @@ export class ValidationService{
       }
 
       const headers = new HttpHeaders({
-        'Authorization': `Bearer ${access_token_cookie}`
+        'Authorization': `Bearer ${access_token_cookie.replace('token=', '')}`
       })
 
       return this.http.get<UserDto>(this.baseUrl + '/validation/header', {
