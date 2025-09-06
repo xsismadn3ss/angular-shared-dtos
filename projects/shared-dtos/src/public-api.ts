@@ -12,8 +12,10 @@ export * from './lib/cookie'
 // users/auth
 export * from './lib/users/auth/login.dto'
 export * from './lib/users/auth/auth.service'
+export * from './lib/users/auth/auth.token'
 
 
 // users/validation
 export * from './lib/users/validation/validation.service'
 export * from './lib/users/validation/user.dto'
+export * from './lib/users/validation/validation.guard'
