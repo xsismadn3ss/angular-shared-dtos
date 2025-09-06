@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {UserDto} from './user.dto';
 import {findCookie} from '../../cookie';
+import {AUTH_SERVICE_URL} from '../auth/auth.token';
 
 /**
  * ## ``Validation Service``
@@ -17,8 +18,9 @@ import {findCookie} from '../../cookie';
 })
 export class ValidationService{
   private readonly http = inject(HttpClient);
+  private readonly baseUrl = inject(AUTH_SERVICE_URL)
 
-  constructor(private readonly baseUrl?: string | null) {
+  constructor() {
   }
 
   /**

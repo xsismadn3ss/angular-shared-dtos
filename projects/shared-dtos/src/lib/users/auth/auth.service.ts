@@ -3,6 +3,7 @@ import {LoginResponseDto, LoginDto} from './login.dto';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {MessageDto} from '../../common/message.dto';
+import {AUTH_SERVICE_URL} from './auth.token';
 
 /**
  * # ``Auth Service``
@@ -70,8 +71,9 @@ import {MessageDto} from '../../common/message.dto';
 })
 export class AuthService {
   private readonly  http = inject(HttpClient)
+  private readonly baseUrl = inject(AUTH_SERVICE_URL, {optional: false})
 
-  constructor(private readonly baseUrl?: string | null) {}
+  constructor() {}
 
   /**
    * ### Login
